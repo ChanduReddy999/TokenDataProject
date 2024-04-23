@@ -37,6 +37,7 @@ const addUserService = async (req) => {
         mailService()
         return { status: 200, message: "success", data: [] }
     } catch (error) {
+      console.log(error);
         return { status: 300, message: "error", data: [] }
     }
 }
@@ -52,7 +53,8 @@ const RandomOTP = ()=>{
 }
 
 
-const mailService = async () => {
+const mailService = async (req) => {
+  const email = req.body.email
   var OneTimePassword = await RandomOTP()
   try {
     var transporter = nodemailer.createTransport({
@@ -65,7 +67,7 @@ const mailService = async () => {
 
     var mailOptions = {
       from: 'anilreddydwaram@gmail.com',
-      to: 'cmfriend111@gmail.com',
+      to: `${email}`,
       subject: 'OTP for Verification',
       html: `<h1>DemoProject</h1>
       <p>Hello,This is your OTP ${OneTimePassword} to Verify your account</p>`,
